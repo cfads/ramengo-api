@@ -4,8 +4,7 @@ info:
   version: "1.0.0"
   description: This API allows users to list available broths, available proteins and place an order.
 servers:
-  - url: /v3/api-docs
-    description: ramenGO! documentation
+  - url: https://your-api-gateway-url
 paths:
   /broths:
     get:

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -13,7 +14,8 @@ import java.io.IOException;
 @Component
 public class ApiKeyInterceptor implements HandlerInterceptor {
 
-    private static final String API_KEY = "6L8UhCLzzcI9EFZBEoGFbqgAAvlEQT6ZlN679_UANHY";
+    @Value("${api.ramengo.key}")
+    private String API_KEY;
 
     @Autowired
     private ObjectMapper objectMapper;

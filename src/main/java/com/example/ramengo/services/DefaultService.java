@@ -14,6 +14,7 @@ import com.example.ramengo.repository.ProteinRepository;
 import com.example.ramengo.utils.OrderImages;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -37,6 +38,12 @@ public class DefaultService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Value("${api.redventures.url}")
+    private String apiRVUrl;
+
+    @Value("${api.redventures.key}")
+    private String apiRVKey;
 
     public List<Broth> listBroths(){
         List<Broth> broths = brothRepository.findAll();
@@ -79,8 +86,8 @@ public class DefaultService {
         HttpClient httpClient = HttpClient.newHttpClient();
 
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.tech.redventures.com.br/orders/generate-id"))
-                .header("x-api-key","ZtVdh8XQ2U8pWI2gmZ7f796Vh8GllXoN7mr0djNf")
+                .uri(URI.create(apiRVUrl + "/orders/generate-id"))
+                .header("x-api-key",apiRVKey)
                 .POST(HttpRequest.BodyPublishers.noBody())
                 .build();
 
