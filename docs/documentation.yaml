@@ -1,0 +1,230 @@
+openapi: 3.0.0
+info:
+  title: ramenGO!
+  version: "1.0.0"
+  description: This API allows users to list available broths, available proteins and place an order.
+servers:
+  - url: /v3/api-docs
+    description: ramenGO! documentation
+paths:
+  /broths:
+    get:
+      summary: List all available broths
+      description: This endpoint returns a list of all available broths.
+      responses:
+        '200':
+          description: A list of broths
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Broth'
+              examples:
+                example1:
+                  value: |
+                    [
+                      {
+                        "id": "3",
+                        "imageInactive": "https://tech.redventures.com.br/icons/miso/inactive.svg",
+                        "imageActive": "https://tech.redventures.com.br/icons/miso/active.svg",
+                        "name": "Miso",
+                        "description": "Paste made of fermented soybeans",
+                        "price": 12
+                      }
+                    ]
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value: |
+                    {
+                      "error": "x-api-key header missing"
+                    }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value: |
+                    {
+                      "error": "unable to list broths"
+                    }
+  /orders:
+    post:
+      summary: Place an order
+      description: This endpoint allows users to place a new order.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+            examples:
+              example1:
+                value: |
+                  {
+                    "brothId": "1",
+                    "proteinId": "2"
+                  }
+      responses:
+        '201':
+          description: Order placed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+              examples:
+                example1:
+                  value: |
+                    {
+                      "id": "51530",
+                      "description": "Salt and Yasai Vegetable Ramen",
+                      "image": "https://s3-alpha-sig.figma.com/img/3ae2/df67/13696c1c0b4f6cd8aedd12e24d921723?Expires=1717977600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=LQzlEMdgI4YVhXXti9MtPwc3kHaZ7OxEsKApfqYF5PoNxIf-vJOhMuy4j~34k3RCZo77lEVhiY7lFw7W93-Amed329bryHtDJX~8h16o-7h2TSssqQzHGlU22Ocpuj2oL09EE8tSDkTleC8t124kufxjdIueMMnXvlmTGGv29f5fYK8FvVKq3de6k2A3uNY0YATNbbYw7DGWgG4uy9WDl6mmLMXvkipzfob1NopmAOxalP2z5fh0YyyBCOwHANt5GpNaaS~bL~~XRoxhp12zr7hOmohj5Ur1tUgY81ZT-lVMOqfx~Q0vBPsjJVjl6AUCCiW7DL-fT2JDHsjcnaT9tA__"
+                    }
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value: |
+                    {
+                      "error": "both brothId and proteinId are required"
+                    }
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value: |
+                    {
+                      "error": "x-api-key header missing"
+                    }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value: |
+                    {
+                      "error": "could not place order"
+                    }
+  /proteins:
+    get:
+      summary: List all available proteins
+      description: This endpoint returns a list of all available proteins.
+      responses:
+        '200':
+          description: A list of proteins
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Protein'
+              examples:
+                example1:
+                  value: |
+                    [
+                      {
+                        "id": 3,
+                        "imageInactive": "https://tech.redventures.com.br/icons/chicken/inactive.svg",
+                        "imageActive": "https://tech.redventures.com.br/icons/chicken/active.svg",
+                        "name": "Karaague",
+                        "description": "Paste made of fermented soybeans",
+                        "price": 12
+                      }
+                    ]
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value: |
+                    {
+                      "error": "x-api-key header missing"
+                    }
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example1:
+                  value: |
+                    {
+                      "error": "unable to list proteins"
+                    }
+components:
+  schemas:
+    Broth:
+      type: object
+      properties:
+        id:
+          type: string
+        imageInactive:
+          type: string
+        imageActive:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+    Protein:
+      type: object
+      properties:
+        id:
+          type: integer
+        imageInactive:
+          type: string
+        imageActive:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: integer
+    OrderRequest:
+      type: object
+      properties:
+        brothId:
+          type: string
+        proteinId:
+          type: string
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
