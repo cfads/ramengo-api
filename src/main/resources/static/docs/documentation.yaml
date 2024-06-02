@@ -4,12 +4,18 @@ info:
   version: "1.0.0"
   description: This API allows users to list available broths, available proteins and place an order.
 servers:
-  - url: https://your-api-gateway-url
+  - url: http://localhost:8080
 paths:
   /broths:
     get:
       summary: List all available broths
       description: This endpoint returns a list of all available broths.
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: A list of broths
@@ -60,6 +66,12 @@ paths:
     post:
       summary: Place an order
       description: This endpoint allows users to place a new order.
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -128,6 +140,12 @@ paths:
     get:
       summary: List all available proteins
       description: This endpoint returns a list of all available proteins.
+      parameters:
+        - in: header
+          name: x-api-key
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: A list of proteins
