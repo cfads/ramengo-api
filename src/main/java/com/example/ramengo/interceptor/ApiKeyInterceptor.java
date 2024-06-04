@@ -22,6 +22,7 @@ public class ApiKeyInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        response.setHeader("Access-Control-Allow-Origin", "*");
         String apiKey = request.getHeader("x-api-key");
 
         if (apiKey == null || apiKey.isEmpty()) {
